@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block main %}
+<form  method="post">
+    {{ form|crispy }}
+    <select name="queries">
+        <option value="1">لیست رویدادهایی که مکان آن مورد نظر شما است </option>
+        <option value="2">لیست افرادی که در رویداد مورد نظر شما ثبت‌نام کرده اند</option>
+        <option value="3">لیست افرادی که به رویداد مورد نظر شما امتیازی بالاتر از امتیاز مورد نظر شما داده اند</option>
+        <option value="4">لیست انواع بلیت‌های رویداد مورد نظر شما</option>
+        <option value="5">لیست نظرات کاربران برای یک رویداد</option>
+        <option value="6">لیست کاربرانی که برگزارکننده با ایمیل مورد نظر شما را دنبال می‌کنند.</option>
+        <option value="7">لیست رویدادهایی که موضوع مورد نظر شما را دارند</option>
+    </select>
+    <button  type="submit"  class="btn btn-success">Submit</button>
+</form>
+{% endblock %}

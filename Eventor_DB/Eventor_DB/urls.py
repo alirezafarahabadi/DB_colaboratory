@@ -19,6 +19,5 @@ from django.conf.urls import include, url
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('eventor/insert/', include('Eventor.urls')),
-    path('eventor/query/', include('Eventor.urls')),
+    path('eventor/', include('Eventor.urls')),
 ]
