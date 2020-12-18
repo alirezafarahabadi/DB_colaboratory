@@ -2,33 +2,31 @@ from django import forms
 from django.utils import timezone
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.core.validators import RegexValidator
+from datetime import date
 
 
-class Participant(forms.Form):
+
+class User(forms.Form):
+    national_code = forms.CharField(min_length=10, max_length=10, validators=[RegexValidator(r'^\d+$')])
     first_name = forms.CharField(max_length=30)
     last_name = forms.CharField(max_length=30)
     email = forms.EmailField(max_length=30)
-    national_code = forms.CharField(min_length=10, max_length=10, validators=[RegexValidator(r'^\d+$')])
     mobile_number = forms.CharField(min_length=11, max_length=11, validators=[RegexValidator(r'^\d+$')])
+    current_money = forms.IntegerField()
+
+
+class Participant(forms.Form):
+    user = forms.CharField(min_length=10, max_length=10, validators=[RegexValidator(r'^\d+$')])
     education = forms.CharField()
     gender = forms.IntegerField()
     faviour_subject = forms.CharField()
 
 class EventHolder(forms.Form):
-    first_name = forms.CharField(max_length=30)
-    last_name = forms.CharField(max_length=30)
-    email = forms.EmailField(max_length=30)
-    national_code = forms.CharField(min_length=10, max_length=10, validators=[RegexValidator(r'^\d+$')])
-    mobile_number = forms.CharField(min_length=11, max_length=11, validators=[RegexValidator(r'^\d+$')])
+    user = forms.CharField(min_length=10, max_length=10, validators=[RegexValidator(r'^\d+$')])
     social_account = forms.CharField(max_length=30)
     calling_number = forms.IntegerField()
     website = forms.CharField(max_length=30)
 
-
-
-class Comment(forms.Form):
-    text = forms.CharField(max_length=30)
-    rate = forms.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
 
 class Location(forms.Form):
     name = forms.CharField(max_length=30)
@@ -62,7 +60,7 @@ class Transaction(forms.Form):
 class Event(forms.Form):
     title = forms.CharField(max_length=50)
     subject = forms.CharField(max_length=30)
-    date = forms.DateField(widget=forms.SelectDateWidget(years=list(range(2000, timezone.now().year+1))))
+    date = forms.DateField(widget=forms.SelectDateWidget(years=list(range(2000, timezone.now().year+1))), initial = date.today)
     holder = forms.IntegerField()
     location = forms.IntegerField()
 
@@ -77,7 +75,9 @@ class Follow(forms.Form):
 class Commenting(forms.Form):
     event = forms.IntegerField()
     comment = forms.IntegerField()
-    participant = forms.IntegerField()
+    participant = forms.CharField(min_length=10, max_length=10, validators=[RegexValidator(r'^\d+$')])
+    text = forms.CharField(max_length=300)
+    rate = forms.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
 
 class Event_discountcode(forms.Form):
     discount = forms.IntegerField()
