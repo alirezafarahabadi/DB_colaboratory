@@ -2,137 +2,182 @@ from django.shortcuts import redirect, render
 from .forms import *
 
 
-def participant(request):
+def user(request):
     if request.method == 'POST':
-        form = Participant(request.POST)
-        
+        print("aassaa1")
+        form = UserForm(request.POST)
+        print("aassaa")
         if form.is_valid():
             print("ok!")
+            print(form.data)
         else:
             print("error!")
             return render(request, 'error.html')
     else:
-        form = Participant()
+        form = UserForm()
+    return render(request, 'main.html', {'form': form, 't':"User"})
+
+def participant(request):
+    if request.method == 'POST':
+        form = ParticipantForm(request.POST)
+        if form.is_valid():
+            print("ok!")
+            print(form.data)
+        else:
+            print("error!")
+            return render(request, 'error.html')
+    else:
+        form = ParticipantForm()
     return render(request, 'main.html', {'form': form, 't':"Participant"})
 
 def eventholder(request):
     if request.method == 'POST':
-        form = EventHolder(request.POST)
-        print(form.data['first_name'])
+        form = EventHolderForm(request.POST)
         if form.is_valid():
-            pass
+            print("ok!")
+            print(form.data)
+        else:
+            print("error!")
+            return render(request, 'error.html')
     else:
-        form = EventHolder()
+        form = EventHolderForm()
     return render(request, 'main.html', {'form': form, 't':"EventHolder"})
     
-def comment(request):
-    if request.method == 'POST':
-        form = Comment(request.POST)
-        
-        if form.is_valid():
-            pass
-    else:
-        form = Comment()
-    return render(request, 'main.html', {'form': form, 't':"Comment"})
 
 def location(request):
     if request.method == 'POST':
-        form = Location(request.POST)
+        form = LocationForm(request.POST)
         
         if form.is_valid():
-            pass
+            print("ok!")
+            print(form.data)
+        else:
+            print("error!")
+            return render(request, 'error.html')
     else:
-        form = Location()
+        form = LocationForm()
     return render(request, 'main.html', {'form': form, 't':"Location"})
 
 def ticket(request):
     if request.method == 'POST':
-        form = Ticket(request.POST)
+        form = TicketForm(request.POST)
         
         if form.is_valid():
-            pass
+            print("ok!")
+            print(form.data)
+        else:
+            print("error!")
+            return render(request, 'error.html')
     else:
-        form = Ticket()
+        form = TicketForm()
     return render(request, 'main.html', {'form': form, 't':"Ticket"})
 
 def discountcode(request):
     if request.method == 'POST':
-        form = Discountcode(request.POST)
+        form = DiscountcodeForm(request.POST)
         
         if form.is_valid():
-            pass
+            print("ok!")
+            print(form.data)
+        else:
+            print("error!")
+            return render(request, 'error.html')
     else:
-        form = Discountcode()
+        form = DiscountcodeForm()
     return render(request, 'main.html', {'form': form, 't':"DiscountCode"})
 
 def event(request):
     if request.method == 'POST':
-        form = Event(request.POST)
+        form = EventForm(request.POST)
         
         if form.is_valid():
-            pass
+            print("ok!")
+            print(form.data)
+        else:
+            print("error!")
+            return render(request, 'error.html')
     else:
-        form = Event()
+        form = EventForm()
     return render(request, 'main.html', {'form': form, 't':"Event"})
 
 def transaction(request):
     if request.method == 'POST':
-        form = Transaction(request.POST)
+        form = TransactionForm(request.POST)
         print(form.data)
         if form.is_valid():
-            pass
+            print("ok!")
+            print(form.data)
+        else:
+            print("error!")
+            return render(request, 'error.html')
     else:
-        form = Transaction()
+        form = TransactionForm()
     return render(request, 'main.html', {'form': form, 't':"Transaction"})
 
 def participate(request):
     if request.method == 'POST':
-        form = Participate(request.POST)
+        form = ParticipateForm(request.POST)
         
         if form.is_valid():
-            pass
+            print("ok!")
+            print(form.data)
+        else:
+            print("error!")
+            return render(request, 'error.html')
     else:
-        form = Participate()
+        form = ParticipateForm()
     return render(request, 'main.html', {'form': form, 't':"Participate"})
 
 def follow(request):
     if request.method == 'POST':
-        form = Follow(request.POST)
+        form = FollowForm(request.POST)
         
         if form.is_valid():
-            pass
+            print("ok!")
+            print(form.data)
+        else:
+            print("error!")
+            return render(request, 'error.html')
     else:
-        form = Follow()
+        form = FollowForm()
     return render(request, 'main.html', {'form': form, 't':"Follow"})
 
 def commenting(request):
     if request.method == 'POST':
-        form = Commenting(request.POST)
+        form = CommentingForm(request.POST)
         
         if form.is_valid():
-            pass
+            print("ok!")
+            print(form.data)
+        else:
+            print("error!")
+            return render(request, 'error.html')
     else:
-        form = Commenting()
+        form = CommentingForm()
     return render(request, 'main.html', {'form': form, 't':"Commentig"})
 
 def event_description(request):
     if request.method == 'POST':
-        form = Event_description(request.POST)
+        form = Event_descriptionForm(request.POST)
         
         if form.is_valid():
-            pass
+            print("ok!")
+            print(form.data)
+        else:
+            print("error!")
+            return render(request, 'error.html')
     else:
-        form = Event_description()
+        form = Event_descriptionForm()
     return render(request, 'main.html', {'form': form, 't':"Event Description"})
 
 def get_query(request):
     # pass
     if request.method == 'POST':
-        form = Query_elements(request.POST)
+        form = Query_elementsForm(request.POST)
         print(request.POST)  
         # if (request.POST.get('queries') == 1):
 
         return redirect('https://google.com')      
     else:
-        form = Query_elements()
+        form = Query_elementsForm()
         return render(request, 'query.html', {'form': form})

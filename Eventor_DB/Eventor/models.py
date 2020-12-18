@@ -10,7 +10,7 @@ class User(models.Model):
     last_name = models.CharField(max_length=30)
     email = models.EmailField(max_length=30)
     mobile_number = models.CharField(max_length=11, validators=[RegexValidator(r'^\d+$')])
-    current_money = models.IntegerField()
+    current_money = models.IntegerField(default=0)
 
 
 class Participant(models.Model):

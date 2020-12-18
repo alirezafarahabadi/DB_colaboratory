@@ -2,6 +2,7 @@ from django.urls import path
 from Eventor import views as eventor_view
 
 urlpatterns = [
+    path('insert/user/', eventor_view.user),
     path('insert/participant/', eventor_view.participant),
     path('insert/eventholder/', eventor_view.eventholder),
     path('insert/location/', eventor_view.location),
