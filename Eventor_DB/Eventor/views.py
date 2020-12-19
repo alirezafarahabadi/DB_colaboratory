@@ -1,6 +1,15 @@
 from django.shortcuts import redirect, render, HttpResponse
 from .forms import *
+from .models import *
 from django.db import connection, transaction
+from django import template
+from django.db.models.query_utils import Q
+
+
+register = template.Library()
+@register.filter(name='get_class')
+def get_class(value):
+  return value.__class__.__name__
 
 
 def user(request):
@@ -213,19 +222,131 @@ def get_query(request):
         cursor = connection.cursor()
         form = Query_elementsForm(request.POST)
         query = request.POST['queries']
+        print(query)
         if int(query) == 1:
             mylocation = form.data['location_name']
-            a = Event.objects.filter(location__name=mylocation)
-            # for w in a:
-            form = EventForm(a)
-            # print(aa)
-            
-            # print(a)
-            # cursor.execute('SELECT "Eventor_event"."title" FROM "Eventor_event" inner join "Eventor_location" ON ( Eventor_event.location_id = "Eventor_location".id ) WHERE "Eventor_location"."name" = {}'.format(location))
-            # cursor.execute('select title from "Eventor_event" join "Eventor_location" on ')
-            # row = cursor.fetchone()
-            # print(row)
-            return render(request, 'result.html', {'form': form})      
+            res = Event.objects.filter(location__name=mylocation)
+            form1 = EventForm()
+            ctx = {
+            'form': form1,
+            'active_orders': res
+            }
+            return render(request, 'result_event.html', ctx)   
+
+        if int(query) == 2:
+            mylist=[]
+            myevent = form.data['event_title']
+            res = Participate.objects.filter(event__title=myevent)
+            # print(res)
+            for i in res:
+                mylist.append(i.participant.user)
+            form1 = UserForm()
+            ctx = {
+            'form': form1,
+            'active_orders': mylist
+            }
+            return render(request, 'result_user.html', ctx) 
+
+        if int(query) == 3:
+            mylist=[]
+            myrate = form.data['score']
+            mycommenting = Commenting.objects.filter(rate__gte=myrate)
+            for i in mycommenting:
+                mylist.append(i.participant.user)
+            form1 = UserForm()
+            ctx = {
+            'form': form1,
+            'active_orders': mylist
+            }
+            return render(request, 'result_user.html', ctx) 
+
+        if int(query) == 4:
+            mylist=[]
+            myevent = form.data['event_title']
+            myticket = Ticket.objects.filter(event__title=myevent)
+            # for i in mycommenting:
+            #     mylist.append(i.participant.user)
+            form1 = TicketForm()
+            ctx = {
+            'form': form1,
+            'active_orders': myticket
+            }
+            return render(request, 'result_ticket.html', ctx) 
+
+        if int(query) == 5:
+            mylist=[]
+            myevent = form.data['event_title']
+            mycommenting = Commenting.objects.filter(event__title=myevent)
+            print(mycommenting)
+            # for i in mycommenting:
+            #     mylist.append(i.participant.user)
+            form1 = CommentingForm()
+            ctx = {
+            'form': form1,
+            'active_orders': mycommenting
+            }
+            return render(request, 'result_comment.html', ctx) 
+
+        if int(query) == 6:
+            mylist=[]
+            myemail = form.data['holder_email']
+            myfollow = Follow.objects.filter(holder__user__email=myemail)
+            # print(myfollow)
+            for i in myfollow:
+                mylist.append(i.participant.user)
+            form1 = UserForm()
+            ctx = {
+            'form': form1,
+            'active_orders': mylist
+            }
+            return render(request, 'result_user.html', ctx)
+
+
+        if int(query) == 7:
+            mylist=[]
+            mysubject = form.data['subject']
+            myevent = Event.objects.filter(subject=mysubject)
+            # print(myfollow)
+            # for i in myfollow:
+            #     mylist.append(i.participant.user)
+            form1 = EventForm()
+            ctx = {
+            'form': form1,
+            'active_orders': myevent
+            }
+            return render(request, 'result_event.html', ctx) 
+
+        if int(query) == 8:
+            myusers = MyUser.objects.all()
+            form1 = UserForm()
+            ctx = {
+            'form': form1,
+            'active_orders': myusers
+            }
+            return render(request, 'result_user.html', ctx) 
+
+        if int(query) == 9:
+            mytrans = Transaction.objects.all()
+            form1 = TransactionForm()
+            ctx = {
+            'form': form1,
+            'active_orders': mytrans
+            }
+            return render(request, 'result_transaction.html', ctx)
+
+        if int(query) == 10:
+            myevent1 = form.data['event_title']
+            print(myevent1)
+            mydist = Event_description.objects.filter(event__title=myevent1)
+            print(mydist)
+            form1 = Event_descriptionForm()
+            ctx = {
+            'form': form1,
+            'active_orders': mydist
+            }
+            return render(request, 'result_des.html', ctx)
+
+
     else:
         form = Query_elementsForm()
         return render(request, 'query.html', {'form': form})

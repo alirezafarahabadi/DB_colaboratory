@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block main %}
+    </form>
+        <h3> Results </h3>
+        {% for active_order in active_orders %}
+            <h4>event: {{active_order.event}}</h4>
+            <h4>text: {{active_order.text}}</h4>
+            <h4>image: {{active_order.price}}</h4>
+            <h4>video: {{active_order.user|linebreaks}}</h4>
+            <hr>
+        {% endfor %}
+{% endblock %}
