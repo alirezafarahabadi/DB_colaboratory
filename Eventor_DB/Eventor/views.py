@@ -1,18 +1,22 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, HttpResponse
 from .forms import *
+from django.db import connection, transaction
 
 
 def user(request):
     if request.method == 'POST':
-        print("aassaa1")
         form = UserForm(request.POST)
-        print("aassaa")
         if form.is_valid():
             print("ok!")
             print(form.data)
+            instance = form.save(commit=False)
+            instance.current_money = 0
+            instance.save()
+            return render(request, 'success.html')
         else:
             print("error!")
-            return render(request, 'error.html')
+            print(form.errors)
+            return render(request, 'error.html', {'form': form})
     else:
         form = UserForm()
     return render(request, 'main.html', {'form': form, 't':"User"})
@@ -23,9 +27,12 @@ def participant(request):
         if form.is_valid():
             print("ok!")
             print(form.data)
+            form.save()
+            return render(request, 'success.html')
         else:
             print("error!")
-            return render(request, 'error.html')
+            print(form.errors)
+            return render(request, 'error.html', {'form': form})
     else:
         form = ParticipantForm()
     return render(request, 'main.html', {'form': form, 't':"Participant"})
@@ -36,9 +43,12 @@ def eventholder(request):
         if form.is_valid():
             print("ok!")
             print(form.data)
+            form.save()
+            return render(request, 'success.html')
         else:
             print("error!")
-            return render(request, 'error.html')
+            print(form.errors)
+            return render(request, 'error.html', {'form': form})
     else:
         form = EventHolderForm()
     return render(request, 'main.html', {'form': form, 't':"EventHolder"})
@@ -51,9 +61,12 @@ def location(request):
         if form.is_valid():
             print("ok!")
             print(form.data)
+            form.save()
+            return render(request, 'success.html')
         else:
             print("error!")
-            return render(request, 'error.html')
+            print(form.errors)
+            return render(request, 'error.html', {'form': form})
     else:
         form = LocationForm()
     return render(request, 'main.html', {'form': form, 't':"Location"})
@@ -65,9 +78,12 @@ def ticket(request):
         if form.is_valid():
             print("ok!")
             print(form.data)
+            form.save()
+            return render(request, 'success.html')
         else:
             print("error!")
-            return render(request, 'error.html')
+            print(form.errors)
+            return render(request, 'error.html', {'form': form})
     else:
         form = TicketForm()
     return render(request, 'main.html', {'form': form, 't':"Ticket"})
@@ -79,9 +95,12 @@ def discountcode(request):
         if form.is_valid():
             print("ok!")
             print(form.data)
+            form.save()
+            return render(request, 'success.html')
         else:
             print("error!")
-            return render(request, 'error.html')
+            print(form.errors)
+            return render(request, 'error.html', {'form': form})
     else:
         form = DiscountcodeForm()
     return render(request, 'main.html', {'form': form, 't':"DiscountCode"})
@@ -93,9 +112,12 @@ def event(request):
         if form.is_valid():
             print("ok!")
             print(form.data)
+            form.save()
+            return render(request, 'success.html')
         else:
             print("error!")
-            return render(request, 'error.html')
+            print(form.errors)
+            return render(request, 'error.html', {'form': form})
     else:
         form = EventForm()
     return render(request, 'main.html', {'form': form, 't':"Event"})
@@ -107,9 +129,12 @@ def transaction(request):
         if form.is_valid():
             print("ok!")
             print(form.data)
+            form.save()
+            return render(request, 'success.html')
         else:
             print("error!")
-            return render(request, 'error.html')
+            print(form.errors)
+            return render(request, 'error.html', {'form': form})
     else:
         form = TransactionForm()
     return render(request, 'main.html', {'form': form, 't':"Transaction"})
@@ -121,9 +146,12 @@ def participate(request):
         if form.is_valid():
             print("ok!")
             print(form.data)
+            form.save()
+            return render(request, 'success.html')
         else:
             print("error!")
-            return render(request, 'error.html')
+            print(form.errors)
+            return render(request, 'error.html', {'form': form})
     else:
         form = ParticipateForm()
     return render(request, 'main.html', {'form': form, 't':"Participate"})
@@ -135,9 +163,12 @@ def follow(request):
         if form.is_valid():
             print("ok!")
             print(form.data)
+            form.save()
+            return render(request, 'success.html')
         else:
             print("error!")
-            return render(request, 'error.html')
+            print(form.errors)
+            return render(request, 'error.html', {'form': form})
     else:
         form = FollowForm()
     return render(request, 'main.html', {'form': form, 't':"Follow"})
@@ -149,9 +180,12 @@ def commenting(request):
         if form.is_valid():
             print("ok!")
             print(form.data)
+            form.save()
+            return render(request, 'success.html')
         else:
             print("error!")
-            return render(request, 'error.html')
+            print(form.errors)
+            return render(request, 'error.html', {'form': form})
     else:
         form = CommentingForm()
     return render(request, 'main.html', {'form': form, 't':"Commentig"})
@@ -163,21 +197,35 @@ def event_description(request):
         if form.is_valid():
             print("ok!")
             print(form.data)
+            form.save()
+            return render(request, 'success.html')
         else:
             print("error!")
-            return render(request, 'error.html')
+            print(form.errors)
+            return render(request, 'error.html', {'form': form})
     else:
         form = Event_descriptionForm()
     return render(request, 'main.html', {'form': form, 't':"Event Description"})
 
 def get_query(request):
-    # pass
+    
     if request.method == 'POST':
+        cursor = connection.cursor()
         form = Query_elementsForm(request.POST)
-        print(request.POST)  
-        # if (request.POST.get('queries') == 1):
-
-        return redirect('https://google.com')      
+        query = request.POST['queries']
+        if int(query) == 1:
+            mylocation = form.data['location_name']
+            a = Event.objects.filter(location__name=mylocation)
+            # for w in a:
+            form = EventForm(a)
+            # print(aa)
+            
+            # print(a)
+            # cursor.execute('SELECT "Eventor_event"."title" FROM "Eventor_event" inner join "Eventor_location" ON ( Eventor_event.location_id = "Eventor_location".id ) WHERE "Eventor_location"."name" = {}'.format(location))
+            # cursor.execute('select title from "Eventor_event" join "Eventor_location" on ')
+            # row = cursor.fetchone()
+            # print(row)
+            return render(request, 'result.html', {'form': form})      
     else:
         form = Query_elementsForm()
         return render(request, 'query.html', {'form': form})

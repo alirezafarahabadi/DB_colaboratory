@@ -78,8 +78,12 @@ WSGI_APPLICATION = 'Eventor_DB.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'eventor_az',
+        'USER': 'eventor_azuser',
+        'PASSWORD': 'Ali13761997',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
