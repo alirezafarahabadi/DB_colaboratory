@@ -11,6 +11,19 @@ GENDER_CHOICES = (
     (False, 'Male')
 )
 
+RATE_CHOICES = (
+    ("1", '1'),
+    ("2", '2'),
+    ("3", '3'),
+    ("4", '4'),
+    ("5", '5')
+)
+
+TICKET_CHOICES = (
+    ('Normal', 'Normal'),
+    ('VIP', 'VIP')
+)
+
 
 
 class UserForm(forms.ModelForm):
@@ -26,7 +39,7 @@ class UserForm(forms.ModelForm):
 
 
 class ParticipantForm(forms.ModelForm):
-    user = forms.CharField(min_length=10, max_length=10, validators=[RegexValidator(r'^\d+$')], label='national code')
+    # user = forms.CharField(min_length=10, max_length=10, validators=[RegexValidator(r'^\d+$')], label='national code')
     gender = forms.ChoiceField(choices = GENDER_CHOICES, initial='', widget=forms.Select())
 
     class Meta:
@@ -34,7 +47,7 @@ class ParticipantForm(forms.ModelForm):
         fields = ('user', 'education', 'gender', 'faviour_subject')
 
 class EventHolderForm(forms.ModelForm):
-    user = forms.CharField(min_length=10, max_length=10, validators=[RegexValidator(r'^\d+$')], label='national code')
+    # user = forms.CharField(min_length=10, max_length=10, validators=[RegexValidator(r'^\d+$')], label='national code')
     
     class Meta:
         model = EventHolder
@@ -47,7 +60,7 @@ class LocationForm(forms.ModelForm):
         fields = ('name', 'country', 'city', 'street', 'capacity')
 
 class EventForm(forms.ModelForm):
-    date = forms.DateField(widget=forms.SelectDateWidget(years=list(range(2000, timezone.now().year+1))), initial = date.today)
+    date = forms.DateField(widget=forms.SelectDateWidget(years=list(range(2000, timezone.now().year+2))), initial = date.today)
 
     class Meta:
         model = Event
@@ -55,13 +68,14 @@ class EventForm(forms.ModelForm):
 
 
 class TicketForm(forms.ModelForm):
+    type = forms.ChoiceField(choices = TICKET_CHOICES, initial='', widget=forms.Select())
     class Meta:
         model = Ticket
         fields = ('price', 'type', 'event')
 
 
 class DiscountcodeForm(forms.ModelForm):
-    expire_date = forms.DateField(widget=forms.SelectDateWidget(years=list(range(2000, timezone.now().year+1))), initial = date.today)
+    expire_date = forms.DateField(widget=forms.SelectDateWidget(years=list(range(2000, timezone.now().year+2))), initial = date.today)
 
     class Meta:
         model = Discountcode
@@ -76,7 +90,7 @@ class Event_descriptionForm(forms.ModelForm):
         fields = ('event', 'text', 'image', 'video')
 
 class TransactionForm(forms.ModelForm):
-    date = forms.DateField(widget=forms.SelectDateWidget(years=list(range(2000, timezone.now().year+1))), initial = date.today)
+    date = forms.DateField(widget=forms.SelectDateWidget(years=list(range(2000, timezone.now().year+2))), initial = date.today)
 
     class Meta:
         model = Transaction
@@ -103,8 +117,8 @@ class Event_discountcodeForm(forms.ModelForm):
         fields = ('discount', 'event')
 
 class Query_elementsForm(forms.Form):
-    event_title = forms.CharField(max_length=50, required=False)
-    location_name = forms.CharField(max_length=30, required=False)
-    holder_email = forms.EmailField(max_length=30, required=False)
-    score = forms.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)], required=False)
-    subject = forms.CharField(max_length=30, required=False)
+    event_title = forms.ModelChoiceField(queryset=Event.objects.values_list('title', flat=True).distinct('title'), required=False)
+    location_name = forms.ModelChoiceField(queryset=Location.objects.values_list('name', flat=True).distinct('name'), required=False)
+    holder_company = forms.ModelChoiceField(queryset=EventHolder.objects.values_list('company_name', flat=True).distinct('company_name'), required=False)
+    score = forms.ChoiceField(choices = RATE_CHOICES, initial='', widget=forms.Select())
+    subject = forms.ModelChoiceField(queryset=Event.objects.values_list('subject', flat=True).distinct('subject'), required=False)

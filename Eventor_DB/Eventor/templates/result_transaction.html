@@ -2,13 +2,13 @@
 {% load crispy_forms_tags %}
 
 {% block main %}
-    </form>
-        <h3> Results </h3>
-        {% for active_order in active_orders %}
-            <h4>type: {{active_order.type}}</h4>
-            <h4>date: {{active_order.date}}</h4>
-            <h4>price: {{active_order.price}}</h4>
-            <h4>user: {{active_order.user|linebreaks}}</h4>
-            <hr>
-        {% endfor %}
+    <h3> Results </h3>
+    <hr>
+    {% for active_order in active_orders %}
+        <h4>type: {{active_order.type}}</h4>
+        <h4>date: {{active_order.date}}</h4>
+        <h4>price: {{active_order.price}}</h4>
+        <h4>user: {{active_order.user_id}}</h4>
+        <hr>
+    {% endfor %}
 {% endblock %}

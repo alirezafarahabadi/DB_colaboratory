@@ -2,11 +2,12 @@
 {% load crispy_forms_tags %}
 
 {% block main %}
-    </form>
-        <h3> Results </h3>
-        {% for active_order in active_orders %}
-            <h4>user: {{active_order.participant}}</h4>
-            <h4>comment: {{active_order.text|linebreaks}}</h4>
-            <hr>
-        {% endfor %}
+    <h3> Results </h3>
+    <hr>
+    {% for active_order in active_orders %}
+        <h4>participant: {{active_order.participant_id}}</h4>
+        <h4>comment: {{active_order.text}}</h4>
+        <h4>rate: {{active_order.rate}}</h4>
+        <hr>
+    {% endfor %}
 {% endblock %}

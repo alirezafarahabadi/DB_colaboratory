@@ -11,7 +11,7 @@ TRANSACTION_CHOICES = (
 )
 
 class MyUser(models.Model):
-    national_code = models.CharField(primary_key=True, max_length=10, validators=[RegexValidator(r'^\d+$')])
+    national_code = models.CharField(unique=True, max_length=10, validators=[RegexValidator(r'^\d+$')])
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     email = models.EmailField(max_length=30)
@@ -38,6 +38,7 @@ class EventHolder(models.Model):
     social_account = models.CharField(max_length=30)
     calling_number = models.IntegerField()
     website = models.CharField(max_length=30)
+    company_name = models.CharField(max_length=30, null=True)
 
     def __str__(self):
         ret = self.user.first_name + "  "+self.user.last_name
@@ -58,7 +59,7 @@ class Event(models.Model):
     title = models.CharField(max_length=50)
     subject = models.CharField(max_length=30)
     date = models.DateField(default=date.today)
-    holder = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+    holder = models.ForeignKey(EventHolder, on_delete=models.CASCADE)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
 
     def __str__(self):

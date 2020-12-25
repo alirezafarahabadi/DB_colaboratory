@@ -14,6 +14,7 @@ urlpatterns = [
     path('insert/follow/', eventor_view.follow),
     path('insert/commenting/', eventor_view.commenting),
     path('insert/event_description/', eventor_view.event_description),
+    path('insert/event_discountcode/', eventor_view.event_discountcode),
     path('query/', eventor_view.get_query),
 
 ]
