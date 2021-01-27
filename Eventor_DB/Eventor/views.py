@@ -281,7 +281,7 @@ def get_query(request):
             ctx = {
             'active_orders': row
             }
-            return render(request, 'result_user.html', ctx) 
+            return render(request, 'result_user2.html', ctx) 
 
         if int(query) == 4:
             mylist=[]
@@ -319,7 +319,7 @@ def get_query(request):
         if int(query) == 7:
             mysubject = form.data['subject']
             with connection.cursor() as cursor:
-                cursor.execute("""SELECT * FROM "Eventor_event" e where e."subject" = %s""", [mysubject])
+                cursor.execute("""SELECT e."title", e."subject", e."holder_id", e."date", l."name" FROM "Eventor_event" e inner join "Eventor_location" l on (l."id" = e."location_id") where e."subject" = %s""", [mysubject])
                 row = dictfetchall(cursor)
                 print(row)
 
